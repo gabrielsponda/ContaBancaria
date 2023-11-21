@@ -3,6 +3,7 @@ package contaBancaria;
 import java.util.Scanner;
 
 import contaBancaria.model.Conta;
+import contaBancaria.model.ContaCorrente;
 import contaBancaria.util.Cores;
 
 public class Menu {
@@ -25,7 +26,17 @@ public class Menu {
 		conta1.visualizar();
 		conta1.depositar(5000.00f);
 		conta1.visualizar();
-
+		
+		Conta conta2 = new Conta(2, 123, 1, "Vitor Nascimento", 300000.00f);
+		conta2.visualizar();
+		
+		ContaCorrente contaCorrente1 = new ContaCorrente(3, 456, 1, "Felipe", 100000.00f, 2000.00f);
+		contaCorrente1.visualizar();
+		contaCorrente1.sacar(102000.00f);
+		contaCorrente1.visualizar();
+		contaCorrente1.depositar(500.00f);
+		contaCorrente1.visualizar();
+		
 		while (true) {
 			
 			// Menu

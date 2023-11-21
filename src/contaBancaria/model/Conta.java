@@ -103,7 +103,6 @@ public class Conta {
 		 System.out.printf("| Tipo: %-31s|\n"                         , tipo);
 		 System.out.printf("| Titular: %-28s|\n"                      , this.titular);
 		 System.out.printf("| Saldo: %-30.2f|\n"                      , this.saldo);
-		System.out.println("└──────────────────────────────────────┘");
 	}
 
 }
