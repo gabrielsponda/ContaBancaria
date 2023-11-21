@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 import contaBancaria.model.Conta;
 import contaBancaria.model.ContaCorrente;
+import contaBancaria.model.ContaPoupanca;
 import contaBancaria.util.Cores;
 
 public class Menu {
@@ -36,6 +37,9 @@ public class Menu {
 		contaCorrente1.visualizar();
 		contaCorrente1.depositar(500.00f);
 		contaCorrente1.visualizar();
+		
+		ContaPoupanca contaPoupanca1 = new ContaPoupanca(4, 456, 2, "Gabriel", 100000.00f, 25);
+		contaPoupanca1.visualizar();
 		
 		while (true) {
 			

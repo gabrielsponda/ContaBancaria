@@ -32,7 +32,7 @@ public class ContaCorrente extends Conta {
 	@Override
 	public void visualizar() {
 		super.visualizar();
-		System.out.printf("| Limite: %-29.2f|\n", this.limiteAtual);
+		 System.out.printf("| Limite de crédito: %-18.2f|\n", this.limiteAtual);
 		System.out.println("└──────────────────────────────────────┘");
 	}
 
