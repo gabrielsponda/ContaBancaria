@@ -2,7 +2,7 @@ package contaBancaria.model;
 
 import contaBancaria.util.Cores;
 
-public class Conta {
+public abstract class Conta {
 
 	// Atributos
 	private int numero;
@@ -60,49 +60,49 @@ public class Conta {
 	public void setSaldo(float saldo) {
 		this.saldo = saldo;
 	}
-	
+
 	public boolean sacar(float valor) {
-		
+
 		if (this.getSaldo() < valor) {
 			System.out.println(Cores.TEXT_RESET);
 			System.out.println("========================================");
-			System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_RED_BACKGROUND_BRIGHT );
+			System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_RED_BACKGROUND_BRIGHT);
 			System.out.println("┌──────────────────────────────────────┐");
 			System.out.println("|          SALDO INSUFICIENTE!         |");
 			System.out.println("└──────────────────────────────────────┘");
 			return false;
 		}
-		
+
 		this.setSaldo(this.getSaldo() - valor);
 		return true;
-		
+
 	}
-	
+
 	public void depositar(float valor) {
 		this.setSaldo(this.getSaldo() + valor);
 	}
-	
+
 	// Método auxiliar
 	public void visualizar() {
-		
+
 		String tipo = "";
-		
+
 		switch (this.tipo) {
 		case 1 -> tipo = "Corrente";
 		case 2 -> tipo = "Poupança";
 		}
-		
+
 		System.out.println(Cores.TEXT_RESET);
-		System.out.println("========================================");
-		System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND );
+		System.out.println("----------------------------------------");
+		System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND);
 		System.out.println("┌──────────────────────────────────────┐");
 		System.out.println("|            DADOS DA CONTA            |");
 		System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
-		 System.out.printf("| Número: %-29d|\n"                       , this.numero);
-		 System.out.printf("| Agência: %-28d|\n"                      , this.agencia);
-		 System.out.printf("| Tipo: %-31s|\n"                         , tipo);
-		 System.out.printf("| Titular: %-28s|\n"                      , this.titular);
-		 System.out.printf("| Saldo: %-30.2f|\n"                      , this.saldo);
+		System.out.printf("| Número: %-29d|\n", this.numero);
+		System.out.printf("| Agência: %-28d|\n", this.agencia);
+		System.out.printf("| Tipo: %-31s|\n", tipo);
+		System.out.printf("| Titular: %-28s|\n", this.titular);
+		System.out.printf("| Saldo: %-30.2f|\n", this.saldo);
 	}
 
 }

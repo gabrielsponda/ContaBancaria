@@ -2,7 +2,7 @@ package contaBancaria;
 
 import java.util.Scanner;
 
-import contaBancaria.model.Conta;
+import contaBancaria.controller.ContaController;
 import contaBancaria.model.ContaCorrente;
 import contaBancaria.model.ContaPoupanca;
 import contaBancaria.util.Cores;
@@ -13,40 +13,18 @@ public class Menu {
 
 	public static void main(String[] args) {
 
-		int opcao;
-		
-		// Objetos da classe conta para testes
-		Conta conta1 = new Conta(1, 123, 1, "Victória Moraes", 100000.00f);
-		conta1.visualizar();
-		System.out.println(Cores.TEXT_RESET);
-		System.out.println("========================================");
-		System.out.printf("\nSaldo da Victória: %.2f\n", conta1.getSaldo());
-		conta1.setSaldo(200000.00f);
-		conta1.visualizar();
-		conta1.sacar(210000.00f);
-		conta1.visualizar();
-		conta1.depositar(5000.00f);
-		conta1.visualizar();
-		
-		Conta conta2 = new Conta(2, 123, 1, "Vitor Nascimento", 300000.00f);
-		conta2.visualizar();
-		
-		ContaCorrente contaCorrente1 = new ContaCorrente(3, 456, 1, "Felipe", 100000.00f, 2000.00f);
-		contaCorrente1.visualizar();
-		contaCorrente1.sacar(102000.00f);
-		contaCorrente1.visualizar();
-		contaCorrente1.depositar(500.00f);
-		contaCorrente1.visualizar();
-		
-		ContaPoupanca contaPoupanca1 = new ContaPoupanca(4, 456, 2, "Gabriel", 100000.00f, 25);
-		contaPoupanca1.visualizar();
-		
+		ContaController contas = new ContaController();
+
+		int opcao, numero, agencia, tipo, aniversario;
+		String titular;
+		float saldo, limite;
+
 		while (true) {
-			
+
 			// Menu
 			System.out.println(Cores.TEXT_RESET);
 			System.out.println("========================================");
-			System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND );
+			System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND);
 			System.out.println("┌──────────────────────────────────────┐");
 			System.out.println("|                                      |");
 			System.out.println("|                 MENU                 |");
@@ -63,8 +41,8 @@ public class Menu {
 			System.out.println("|  8 - Transferir valores entre Contas |");
 			System.out.println("|  0 - Sair                            |");
 			System.out.println("|                                      |");
-			System.out.println("└──────────────────────────────────────┘\n");
-			System.out.print("→ Digite uma opção: ");
+			System.out.println("└──────────────────────────────────────┘");
+			System.out.print("\n→ Digite uma opção: ");
 			opcao = leia.nextInt();
 
 			if (opcao == 0) {
@@ -73,120 +51,151 @@ public class Menu {
 			}
 
 			switch (opcao) {
-			
+
 			case 1:
-				
+
 				System.out.println(Cores.TEXT_RESET);
 				System.out.println("========================================");
-				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND );
+				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND);
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("|             CRIAR CONTA              |");
 				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
-				System.out.println("| // To Do                             |");
+				System.out.println("| Forneça as informações necessárias.  |");
 				System.out.println("└──────────────────────────────────────┘");
-				
+
+				System.out.print("\n→ Digite o número da agência: ");
+				agencia = leia.nextInt();
+
+				System.out.print("\n→ Digite o nome do titular: ");
+				leia.skip("\\R");
+				titular = leia.nextLine();
+
+				System.out.print("\n→ Digite 1 para conta corrente ou 2 para conta poupança: ");
+				tipo = leia.nextInt();
+
+				System.out.print("\n→ Digite o saldo da conta: ");
+				saldo = leia.nextFloat();
+
+				switch (tipo) {
+				case 1 -> {
+					System.out.print("\n→ Digite o limite da conta: ");
+					limite = leia.nextFloat();
+					contas.cadastrar(new ContaCorrente(contas.gerarNumero(), agencia, tipo, titular, saldo, limite));
+					break;
+				}
+				case 2 -> {
+					System.out.println("\n→ Digite o dia do aniversário da conta: ");
+					aniversario = leia.nextInt();
+					contas.cadastrar(
+							new ContaPoupanca(contas.gerarNumero(), agencia, tipo, titular, saldo, aniversario));
+					break;
+				}
+				default -> throw new IllegalArgumentException("Tipo de conta inválido!");
+				}
+
 				break;
 
 			case 2:
-				
+
 				System.out.println(Cores.TEXT_RESET);
 				System.out.println("========================================");
-				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND );
+				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND);
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("|        LISTAR TODAS AS CONTAS        |");
 				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
-				System.out.println("| // To Do                             |");
+				System.out.printf("|         Total de contas: %02d          |\n", contas.getNumero());
 				System.out.println("└──────────────────────────────────────┘");
-				
+				contas.listarTodas();
+
 				break;
 
 			case 3:
 
 				System.out.println(Cores.TEXT_RESET);
 				System.out.println("========================================");
-				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND );
+				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND);
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("| CONSULTAR DADOS DA CONTA POR NÚMERO  |");
 				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
 				System.out.println("| // To Do                             |");
 				System.out.println("└──────────────────────────────────────┘");
-				
+
 				break;
 
 			case 4:
 
 				System.out.println(Cores.TEXT_RESET);
 				System.out.println("========================================");
-				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND );
+				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND);
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("|       ATUALIZAR DADOS DA CONTA       |");
 				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
 				System.out.println("| // To Do                             |");
 				System.out.println("└──────────────────────────────────────┘");
-				
+
 				break;
 
 			case 5:
 
 				System.out.println(Cores.TEXT_RESET);
 				System.out.println("========================================");
-				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND );
+				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND);
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("|            APAGAR CONTA              |");
 				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
 				System.out.println("| // To Do                             |");
 				System.out.println("└──────────────────────────────────────┘");
-				
+
 				break;
 
 			case 6:
 
 				System.out.println(Cores.TEXT_RESET);
 				System.out.println("========================================");
-				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND );
+				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND);
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("|                SAQUE                 |");
 				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
 				System.out.println("| // To Do                             |");
 				System.out.println("└──────────────────────────────────────┘");
-				
+
 				break;
 
 			case 7:
 
 				System.out.println(Cores.TEXT_RESET);
 				System.out.println("========================================");
-				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND );
+				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND);
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("|               DEPÓSITO               |");
 				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
 				System.out.println("| // To Do                             |");
 				System.out.println("└──────────────────────────────────────┘");
-				
+
 				break;
 
 			case 8:
 
 				System.out.println(Cores.TEXT_RESET);
 				System.out.println("========================================");
-				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND );
+				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND);
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("|      TRANSFERÊNCIA ENTRE CONTAS      |");
 				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
 				System.out.println("| // To Do                             |");
 				System.out.println("└──────────────────────────────────────┘");
-				
+
 				break;
 
 			default:
 
 				System.out.println(Cores.TEXT_RESET);
 				System.out.println("========================================");
-				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_RED_BACKGROUND_BRIGHT );
+				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_RED_BACKGROUND_BRIGHT);
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("|           OPÇÃO INVÁLIDA!            |");
 				System.out.println("└──────────────────────────────────────┘");
-				
+
 				break;
 
 			}
@@ -198,7 +207,7 @@ public class Menu {
 	public static void sobre() {
 		System.out.println(Cores.TEXT_RESET);
 		System.out.println("========================================");
-		System.out.println(Cores.TEXT_BLACK_BOLD + Cores.ANSI_WHITE_BACKGROUND );
+		System.out.println(Cores.TEXT_BLACK_BOLD + Cores.ANSI_WHITE_BACKGROUND);
 		System.out.println("┌──────────────────────────────────────┐");
 		System.out.println("| Projeto Desenvolvido por:            |");
 		System.out.println("| Gabriel Sponda Freitas Bettarello    |");
