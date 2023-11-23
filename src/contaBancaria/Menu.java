@@ -1,5 +1,7 @@
 package contaBancaria;
 
+import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import contaBancaria.controller.ContaController;
@@ -31,21 +33,27 @@ public class Menu {
 			System.out.println("|                                      |");
 			System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
 			System.out.println("|                                      |");
-			System.out.println("|  1 - Criar Conta                     |");
-			System.out.println("|  2 - Listar todas as Contas          |");
-			System.out.println("|  3 - Buscar Conta por Numero         |");
-			System.out.println("|  4 - Atualizar Dados da Conta        |");
-			System.out.println("|  5 - Apagar Conta                    |");
+			System.out.println("|  1 - Criar conta                     |");
+			System.out.println("|  2 - Listar todas as contas          |");
+			System.out.println("|  3 - Buscar conta por número         |");
+			System.out.println("|  4 - Atualizar dados da conta        |");
+			System.out.println("|  5 - Apagar conta                    |");
 			System.out.println("|  6 - Sacar                           |");
 			System.out.println("|  7 - Depositar                       |");
-			System.out.println("|  8 - Transferir valores entre Contas |");
-			System.out.println("|  0 - Sair                            |");
+			System.out.println("|  8 - Transferir valores entre contas |");
+			System.out.println("|  9 - Sair                            |");
 			System.out.println("|                                      |");
 			System.out.println("└──────────────────────────────────────┘");
 			System.out.print("\n→ Digite uma opção: ");
-			opcao = leia.nextInt();
+			
+			try {
+				opcao = leia.nextInt();
+			} catch (InputMismatchException e) {
+				opcao = 99;
+			}
 
-			if (opcao == 0) {
+
+			if (opcao == 9) {
 				sobre();
 				System.exit(0);
 			}
@@ -92,7 +100,8 @@ public class Menu {
 				}
 				default -> throw new IllegalArgumentException("Tipo de conta inválido!");
 				}
-
+				
+				keyPress();
 				break;
 
 			case 2:
@@ -107,6 +116,7 @@ public class Menu {
 				System.out.println("└──────────────────────────────────────┘");
 				contas.listarTodas();
 
+				keyPress();
 				break;
 
 			case 3:
@@ -117,9 +127,13 @@ public class Menu {
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("| CONSULTAR DADOS DA CONTA POR NÚMERO  |");
 				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
-				System.out.println("| // To Do                             |");
+				System.out.println("| Informe o número da conta desejada.  |");
 				System.out.println("└──────────────────────────────────────┘");
+				System.out.print("\n→ Digite o número da conta: ");
+				numero = leia.nextInt();
+				contas.procurarPorNumero(numero);
 
+				keyPress();
 				break;
 
 			case 4:
@@ -132,7 +146,8 @@ public class Menu {
 				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
 				System.out.println("| // To Do                             |");
 				System.out.println("└──────────────────────────────────────┘");
-
+				
+				keyPress();
 				break;
 
 			case 5:
@@ -143,9 +158,13 @@ public class Menu {
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("|            APAGAR CONTA              |");
 				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
-				System.out.println("| // To Do                             |");
+				System.out.println("| Informe o número da conta desejada.  |");
 				System.out.println("└──────────────────────────────────────┘");
-
+				System.out.print("\n→ Digite o número da conta: ");
+				numero = leia.nextInt();
+				contas.deletar(numero);
+				
+				keyPress();
 				break;
 
 			case 6:
@@ -159,6 +178,7 @@ public class Menu {
 				System.out.println("| // To Do                             |");
 				System.out.println("└──────────────────────────────────────┘");
 
+				keyPress();
 				break;
 
 			case 7:
@@ -172,6 +192,7 @@ public class Menu {
 				System.out.println("| // To Do                             |");
 				System.out.println("└──────────────────────────────────────┘");
 
+				keyPress();
 				break;
 
 			case 8:
@@ -185,6 +206,7 @@ public class Menu {
 				System.out.println("| // To Do                             |");
 				System.out.println("└──────────────────────────────────────┘");
 
+				keyPress();
 				break;
 
 			default:
@@ -196,6 +218,7 @@ public class Menu {
 				System.out.println("|           OPÇÃO INVÁLIDA!            |");
 				System.out.println("└──────────────────────────────────────┘");
 
+				keyPress();
 				break;
 
 			}
@@ -213,6 +236,19 @@ public class Menu {
 		System.out.println("| Gabriel Sponda Freitas Bettarello    |");
 		System.out.println("| github.com/gabrielsponda             |");
 		System.out.println("└──────────────────────────────────────┘");
+	}
+
+	public static void keyPress() {
+
+		try {
+			System.out.println(Cores.TEXT_RESET);
+			System.out.println("========================================");
+			System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND);
+			System.out.println("Pressione a tecla Enter para continuar...");
+			System.in.read();
+		} catch (IOException e) {
+			System.out.println("Você pressionou uma tecla inválida.");
+		}
 	}
 
 }
