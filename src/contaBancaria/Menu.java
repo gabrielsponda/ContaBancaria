@@ -2,9 +2,11 @@ package contaBancaria;
 
 import java.io.IOException;
 import java.util.InputMismatchException;
+import java.util.Optional;
 import java.util.Scanner;
 
 import contaBancaria.controller.ContaController;
+import contaBancaria.model.Conta;
 import contaBancaria.model.ContaCorrente;
 import contaBancaria.model.ContaPoupanca;
 import contaBancaria.util.Cores;
@@ -19,12 +21,12 @@ public class Menu {
 
 		int opcao, numero, agencia, tipo, aniversario;
 		String titular;
-		float saldo, limite;
+		float saldo, limite, valor;
 
 		while (true) {
 
 			// Menu
-			System.out.println(Cores.TEXT_RESET);
+			System.out.print(Cores.TEXT_RESET);
 			System.out.println("========================================");
 			System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND);
 			System.out.println("┌──────────────────────────────────────┐");
@@ -45,13 +47,12 @@ public class Menu {
 			System.out.println("|                                      |");
 			System.out.println("└──────────────────────────────────────┘");
 			System.out.print("\n→ Digite uma opção: ");
-			
+
 			try {
 				opcao = leia.nextInt();
 			} catch (InputMismatchException e) {
 				opcao = 99;
 			}
-
 
 			if (opcao == 9) {
 				sobre();
@@ -100,7 +101,7 @@ public class Menu {
 				}
 				default -> throw new IllegalArgumentException("Tipo de conta inválido!");
 				}
-				
+
 				keyPress();
 				break;
 
@@ -126,7 +127,8 @@ public class Menu {
 				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND);
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("| CONSULTAR DADOS DA CONTA POR NÚMERO  |");
-				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
+				System.out.println(
+						"├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
 				System.out.println("| Informe o número da conta desejada.  |");
 				System.out.println("└──────────────────────────────────────┘");
 				System.out.print("\n→ Digite o número da conta: ");
@@ -144,9 +146,59 @@ public class Menu {
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("|       ATUALIZAR DADOS DA CONTA       |");
 				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
-				System.out.println("| // To Do                             |");
+				System.out.println("| Informe o número da conta desejada.  |");
 				System.out.println("└──────────────────────────────────────┘");
-				
+				System.out.print("\n→ Digite o número da conta: ");
+				numero = leia.nextInt();
+
+				Optional<Conta> conta = contas.buscarNaCollection(numero);
+
+				if (contas.buscarNaCollection(numero).isPresent()) {
+					System.out.println(Cores.TEXT_RESET);
+					System.out.println("----------------------------------------");
+					System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND);
+					System.out.println("┌──────────────────────────────────────┐");
+					System.out.println("|             NOVOS DADOS              |");
+					System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
+					System.out.println("| Forneça as informações necessárias.  |");
+					System.out.println("└──────────────────────────────────────┘");
+
+					System.out.print("\n→ Digite o número da agência: ");
+					agencia = leia.nextInt();
+
+					System.out.print("\n→ Digite o nome do titular: ");
+					leia.skip("\\R");
+					titular = leia.nextLine();
+
+					tipo = conta.get().getTipo();
+
+					System.out.print("\n→ Digite o saldo da conta: ");
+					saldo = leia.nextFloat();
+
+					switch (tipo) {
+					case 1 -> {
+						System.out.print("\n→ Digite o limite da conta: ");
+						limite = leia.nextFloat();
+						contas.atualizar(new ContaCorrente(numero, agencia, tipo, titular, saldo, limite));
+						break;
+					}
+					case 2 -> {
+						System.out.println("\n→ Digite o dia do aniversário da conta: ");
+						aniversario = leia.nextInt();
+						contas.atualizar(new ContaPoupanca(numero, agencia, tipo, titular, saldo, aniversario));
+						break;
+					}
+					default -> throw new IllegalArgumentException("Tipo de conta inválido!");
+					}
+				} else {
+					System.out.println(Cores.TEXT_RESET);
+					System.out.println("----------------------------------------");
+					System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_RED_BACKGROUND_BRIGHT);
+					System.out.println("┌──────────────────────────────────────┐");
+					System.out.println("|        CONTA NÃO ENCONTRADA!         |");
+					System.out.println("└──────────────────────────────────────┘");
+				}
+
 				keyPress();
 				break;
 
@@ -163,7 +215,7 @@ public class Menu {
 				System.out.print("\n→ Digite o número da conta: ");
 				numero = leia.nextInt();
 				contas.deletar(numero);
-				
+
 				keyPress();
 				break;
 
@@ -175,8 +227,14 @@ public class Menu {
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("|                SAQUE                 |");
 				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
-				System.out.println("| // To Do                             |");
+				System.out.println("| Informe o número da conta desejada.  |");
 				System.out.println("└──────────────────────────────────────┘");
+				System.out.print("\n→ Digite o número da conta: ");
+				numero = leia.nextInt();
+				System.out.print("\n→ Digite o valor do saque: ");
+				valor = leia.nextFloat();
+				contas.sacar(numero, valor);
+				
 
 				keyPress();
 				break;
@@ -189,9 +247,14 @@ public class Menu {
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("|               DEPÓSITO               |");
 				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
-				System.out.println("| // To Do                             |");
+				System.out.println("| Informe o número da conta desejada.  |");
 				System.out.println("└──────────────────────────────────────┘");
-
+				System.out.print("\n→ Digite o número da conta: ");
+				numero = leia.nextInt();
+				System.out.print("\n→ Digite o valor do depósito: ");
+				valor = leia.nextFloat();
+				contas.depositar(numero, valor);
+				
 				keyPress();
 				break;
 
