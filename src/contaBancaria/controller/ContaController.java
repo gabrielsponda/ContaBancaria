@@ -162,7 +162,7 @@ public class ContaController implements ContaRepository {
 				System.out.println("----------------------------------------");
 				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_GREEN_BACKGROUND_BRIGHT);
 				System.out.println("┌──────────────────────────────────────┐");
-				System.out.printf(" |    A TRANFERÊNCIA FOI CONCLUÍDA!     |\n", listaContas.size());
+				System.out.printf("|    A TRANFERÊNCIA FOI CONCLUÍDA!     |\n", listaContas.size());
 				System.out.println("└──────────────────────────────────────┘");
 			}
 		} else {

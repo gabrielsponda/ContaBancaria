@@ -266,9 +266,25 @@ public class Menu {
 				System.out.println("┌──────────────────────────────────────┐");
 				System.out.println("|      TRANSFERÊNCIA ENTRE CONTAS      |");
 				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
-				System.out.println("| // To Do                             |");
+				System.out.println("| Informe o número da conta desejada.  |");
 				System.out.println("└──────────────────────────────────────┘");
-
+				System.out.print("\n→ Digite o número da conta de origem: ");
+				numero = leia.nextInt();
+				System.out.print("\n→ Digite o número da conta de destino: ");
+				int numeroDestino = leia.nextInt();
+				if (numero != numeroDestino) {
+					System.out.print("\n→ Digite o valor a ser transferido: ");
+					valor = leia.nextFloat();
+					contas.transferir(numero, numeroDestino, valor);
+				} else {
+					System.out.println(Cores.TEXT_RESET);
+					System.out.println("========================================");
+					System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_RED_BACKGROUND_BRIGHT);
+					System.out.println("┌──────────────────────────────────────┐");
+					System.out.println("|          OPERAÇÃO INVÁLIDA!          |");
+					System.out.println("└──────────────────────────────────────┘");
+				}
+				
 				keyPress();
 				break;
 
