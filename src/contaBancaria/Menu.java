@@ -43,7 +43,8 @@ public class Menu {
 			System.out.println("|  6 - Sacar                           |");
 			System.out.println("|  7 - Depositar                       |");
 			System.out.println("|  8 - Transferir valores entre contas |");
-			System.out.println("|  9 - Sair                            |");
+			System.out.println("|  9 - Buscar conta por nome           |");
+			System.out.println("|  0 - Sair                            |");
 			System.out.println("|                                      |");
 			System.out.println("└──────────────────────────────────────┘");
 			System.out.print("\n→ Digite uma opção: ");
@@ -54,7 +55,7 @@ public class Menu {
 				opcao = 99;
 			}
 
-			if (opcao == 9) {
+			if (opcao == 0) {
 				sobre();
 				System.exit(0);
 			}
@@ -281,6 +282,24 @@ public class Menu {
 					System.out.println("└──────────────────────────────────────┘");
 				}
 				
+				keyPress();
+				break;
+				
+			case 9:
+				
+				System.out.println(Cores.TEXT_RESET);
+				System.out.println("========================================");
+				System.out.println(Cores.TEXT_WHITE_BOLD_BRIGHT + Cores.ANSI_BLUE_BACKGROUND);
+				System.out.println("┌──────────────────────────────────────┐");
+				System.out.println("| CONSULTAR DADOS DA CONTA POR TITULAR |");
+				System.out.println("├──────────────────────────────────────┤" + Cores.TEXT_BLACK + Cores.ANSI_WHITE_BACKGROUND);
+				System.out.println("| Informe o titular da conta desejada. |");
+				System.out.println("└──────────────────────────────────────┘");
+				System.out.print("\n→ Digite o titular da conta: ");
+				titular = leia.nextLine();
+				leia.nextLine();
+				contas.procurarPorNome(titular);
+
 				keyPress();
 				break;
 
