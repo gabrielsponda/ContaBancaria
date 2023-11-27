@@ -178,13 +178,11 @@ public class Menu {
 						System.out.print("\n→ Digite o limite da conta: ");
 						limite = leia.nextFloat();
 						contas.atualizar(new ContaCorrente(numero, agencia, tipo, titular, saldo, limite));
-						break;
 					}
 					case 2 -> {
 						System.out.println("\n→ Digite o dia do aniversário da conta: ");
 						aniversario = leia.nextInt();
 						contas.atualizar(new ContaPoupanca(numero, agencia, tipo, titular, saldo, aniversario));
-						break;
 					}
 					default -> throw new IllegalArgumentException("Tipo de conta inválido!");
 					}
